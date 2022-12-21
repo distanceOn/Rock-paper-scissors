@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Камень, ножницы, бумага</title>
+</head>
+<body>
+  <div class="app"></div>
+  <script>
+    window.application = {
+        blocks: {},
+        screens: {},
+        renderScreen: function(screenName) {
+            this.screens[screenName]();
+        },
+        renderBlock: function(blockName, container) {
+            this.blocks[blockName](container);
+        },
+        timers: []
+    }
+    const blocks = window.application.blocks;
+  </script>
+  <script src="./js/scripts.js"></script>
+  <script src="./js/login.js"></script>
+</body>
+</html>
