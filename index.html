@@ -7,6 +7,8 @@
 </head>
 <body>
   <div class="app"></div>
+
+  <script src="./js/request.js"></script>
   <script>
     window.application = {
         blocks: {},
@@ -17,9 +19,12 @@
         renderBlock: function(blockName, container) {
             this.blocks[blockName](container);
         },
-        timers: []
+        timers: [],
+        playerTokens: {},
     }
     const blocks = window.application.blocks;
+    const players = window.application.playerTokens;
+    let playerCounter = 1;
   </script>
   <script src="./js/scripts.js"></script>
   <script src="./js/login.js"></script>
