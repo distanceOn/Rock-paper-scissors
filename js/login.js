@@ -1,22 +1,36 @@
 function renderLoginBlock(container) {
     const input = document.createElement('input');
+    input.classList.add('app__input');
     const button = document.createElement('button');
+    input.classList.add('app__button');
     button.textContent = 'Войти';
 
     button.addEventListener('click', () => {
         request({
-            path: `login?login=${input.value}`, //
+            path: `login?login=${input.value}`,
             onSuccess: (data) => { // Успех присваивания логина
-                window.application.playerTokens[`player${playerCounter}`] = data.token; // Добавляем токен игрока в объект
-                request({
-                    path: `player-status?token=${players[`player${playerCounter}`]}`,
-                    onSuccess: (data) => {
-                        console.log(data);
-                    }
+                if(data.status === 'error'){
+                    console.log('Ошибка!');
+                }else{
+                        window.application.playerTokens.player = data.token; // Добавляем токен игрока в объект
+                        request({ // справшиваем статус игрока
+                                path: `player-status?token=${players.player}`, 
+                        onSuccess: (data) => {
+                            if(data.status === 'error'){
+                                console.log('Ошибка!');
+                            }else if(data['player-status'].status === 'lobby'){
+                                console.log(data);
+                                window.application.renderScreen('lobby');
+                                
+                            }else if(data['player-status'].status === 'game'){
+
+                            }
+                        }
                 })
+                }
+                
             },
         });
-        playerCounter++; // Увеличиваем колво игроков для последующего добавления игрока на 1 порядок больше
     });
 
 
@@ -31,7 +45,6 @@ function renderLoginScreen() {
 	const app = document.querySelector('.app');
     app.textContent = '';
 
-    console.log('dsadasd');
 
     const title = document.createElement('h1');
     title.textContent = 'Авторизация';

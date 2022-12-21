@@ -1,0 +1,1 @@
+window.application.renderScreen('login');

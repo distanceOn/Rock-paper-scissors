@@ -14,10 +14,18 @@
         blocks: {},
         screens: {},
         renderScreen: function(screenName) {
-            this.screens[screenName]();
+            if(screenName){
+                this.screens[screenName]();
+            }else{
+                console.log('Такой страницы нет');
+            }
         },
         renderBlock: function(blockName, container) {
-            this.blocks[blockName](container);
+            if(blockName && container){
+                this.blocks[blockName](container);
+            }else{
+                console.log('Такого блока нет');
+            }
         },
         timers: [],
         playerTokens: {},
@@ -26,7 +34,9 @@
     const players = window.application.playerTokens;
     let playerCounter = 1;
   </script>
-  <script src="./js/scripts.js"></script>
+  <script src="./js/game.js"></script>
+  <script src="./js/lobby.js"></script>
   <script src="./js/login.js"></script>
+  <script src="./js/scripts.js"></script>
 </body>
 </html>

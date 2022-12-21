@@ -14,7 +14,7 @@ const request = ({
     req.responseType = type;
     req.addEventListener('load', (event) => {
         const target = event.target;
-        
+        onError();
         onSuccess(target.response);
     });
 
