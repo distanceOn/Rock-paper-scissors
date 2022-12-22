@@ -1,4 +1,5 @@
 window.application.blocks['lobby-block'] = renderLobbyBlock;
+window.application.blocks['play-block'] = renderPlayBlock;
 
 window.application.screens['lobby'] = renderLobbyScreen;
 
@@ -15,6 +16,8 @@ function renderLobbyScreen() { //   Отрисовка экрана лобби �
     const content = document.createElement('div');
 	
     window.application.renderBlock('lobby-block', content); // отрисовка блока лобби №2
+    window.application.renderBlock('play-block', content); // отрисовка блока кнопки играть №5
+
 
 	app.appendChild(title);
     app.appendChild(content);
@@ -33,18 +36,20 @@ function renderLobbyBlock(container) { // отрисовка блока лобб
 
 
 function requestPlayers() { // запрос списка игроков №3 и последующий вывод на экран
-    
-    request({
-    path: `player-list?token=${window.application.playerTokens.player}`,
-    onSuccess: (data) => {
-            if(data.status === 'error'){
-                console.log('Ошибка!');
-            }else{        
-                document.querySelector('.app__players').textContent = '';
-                renderPlayersList(data); // вывод списка игроков №4
-            };
-        },
-    });
+    if(window.application.timers.length !== 0){
+        request({
+        path: `player-list?token=${window.application.playerTokens.player}`,
+        onSuccess: (data) => {
+                if(data.status === 'error'){
+                    console.log('Ошибка!');
+                }else{        
+                   document.querySelector('.app__players').textContent = '';
+                   renderPlayersList(data); // вывод списка игроков №4
+               };
+           },
+        });
+    }
+
 };
 
 function renderPlayersList(data) { // Выводим список игроков №4
@@ -56,4 +61,30 @@ function renderPlayersList(data) { // Выводим список игроков
         li.textContent = player.login;
         document.querySelector('.app__players').appendChild(li);
     });
+};
+
+function renderPlayBlock(container){ // отрисовка блока кнопки играть №5
+    const play = document.createElement('button');
+    play.classList.add('app__play-button');
+    play.textContent = 'Играть';
+
+    play.addEventListener('click', () => {
+        request({
+            path: `start?token=${window.application.playerTokens.player}`,
+            onSuccess: (data) => {
+                if(data.status === 'error'){
+                    console.log('Ошибка!');
+                }else{
+                    window.application.id.game = data['player-status'].game.id;
+                    window.application.timers.forEach(timer => {
+                        clearInterval(timer);
+                    });
+                    window.application.timers = [];
+                    window.application.renderScreen('waiting');
+                };
+            },
+        });
+    });
+
+    container.appendChild(play);
 };

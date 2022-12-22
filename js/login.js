@@ -47,7 +47,7 @@ function renderLoginScreen() {
 
 
     const title = document.createElement('h1');
-    title.textContent = 'Авторизация';
+    title.textContent = 'Камень, ножницы, бумага';
 
     const content = document.createElement('div');
 	
