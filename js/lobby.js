@@ -1,33 +1,10 @@
-function renderLobbyBlock(container) {
-    const ol = document.createElement('ol');
-    ol.classList.add('app__players');
-    container.appendChild(ol);
-    
-        console.log(window.application.playerTokens);
-        request({
-        path: `player-list?token=${window.application.playerTokens.player}`,
-        onSuccess: (data) => {
-            if(data.status === 'error'){
-                console.log('Ошибка!');
-            }else{
-                console.log(data);
-                data.list.forEach(player => { // Выводим список игроков
-                const li = document.createElement('li');
-                li.classList.add('app__player');
-                li.textContent = player.login;
-                ol.appendChild(li);
-            });
-            };
-            
-        }
-    })
+window.application.blocks['lobby-block'] = renderLobbyBlock;
 
-    
+window.application.screens['lobby'] = renderLobbyScreen;
 
+// functions
 
-}
-
-function renderLobbyScreen() {
+function renderLobbyScreen() { //   Отрисовка экрана лобби №1
     const app = document.querySelector('.app');
     app.textContent = '';
 
@@ -35,14 +12,48 @@ function renderLobbyScreen() {
     const title = document.createElement('h1');
     title.textContent = 'Лобби';
 
-     const content = document.createElement('div');
+    const content = document.createElement('div');
 	
-     window.application.renderBlock('lobby-block', content);
+    window.application.renderBlock('lobby-block', content); // отрисовка блока лобби №2
 
 	app.appendChild(title);
     app.appendChild(content);
-}
+};
 
-window.application.blocks['lobby-block'] = renderLobbyBlock;
+function renderLobbyBlock(container) { // отрисовка блока лобби №2
+    console.log(window.application.playerTokens);
+    const ol = document.createElement('ol');
+    ol.classList.add('app__players');
+    container.appendChild(ol);
 
-window.application.screens['lobby'] = renderLobbyScreen;
+    window.application.timers.push(setInterval(() => { // добавляем интервал и начинаем
+        requestPlayers(); // запрос списка игроков №3
+    }, 1000));
+};
+
+
+function requestPlayers() { // запрос списка игроков №3 и последующий вывод на экран
+    
+    request({
+    path: `player-list?token=${window.application.playerTokens.player}`,
+    onSuccess: (data) => {
+            if(data.status === 'error'){
+                console.log('Ошибка!');
+            }else{        
+                document.querySelector('.app__players').textContent = '';
+                renderPlayersList(data); // вывод списка игроков №4
+            };
+        },
+    });
+};
+
+function renderPlayersList(data) { // Выводим список игроков №4
+    
+    console.log(data);
+    data.list.forEach(player => { 
+        const li = document.createElement('li');
+        li.classList.add('app__player');
+        li.textContent = player.login;
+        document.querySelector('.app__players').appendChild(li);
+    });
+};
