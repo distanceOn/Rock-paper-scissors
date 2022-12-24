@@ -25,25 +25,22 @@ function renderWaitingBlock(container) { // отрисовка блока ожи
     wait.textContent = 'Ожидание подключения соперника...';
     container.appendChild(wait);
 
-    const enemy = document.createElement('h3');
-    enemy.classList.add('app__enemy');
-    container.appendChild(enemy);
-
     window.application.timers.push(setInterval(() => { // запрос статуса игры №3
-        requestGameStatus(enemy);
+        requestGameStatus();
     }, 500));
 
 
 };
 
-function requestGameStatus(enemy){ // запрос статуса игры №3
-    enemy.textContent = '';
+function requestGameStatus(){ // запрос статуса игры №3
     request({
         path: `game-status?token=${window.application.playerTokens.player}&id=${window.application.id.game}`,
         onSuccess: (data) => {
-            console.log(data);
-            // enemy.textContent = data['game-status'].enemy.login;
-            
+            if(data['game-status'].status !== "waiting-for-start"){
+                window.application.enemies.enemy = data['game-status'].enemy.login;
+                clearTimers();    
+                window.application.renderScreen('move'); //переход в ход №4           
+            };            
         },
     });
 };

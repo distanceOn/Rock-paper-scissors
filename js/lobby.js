@@ -42,9 +42,11 @@ function requestPlayers() { // запрос списка игроков №3 и 
         onSuccess: (data) => {
                 if(data.status === 'error'){
                     console.log('Ошибка!');
-                }else{        
-                   document.querySelector('.app__players').textContent = '';
-                   renderPlayersList(data); // вывод списка игроков №4
+                }else{   
+                    if(document.querySelector('.app__players')){
+                        document.querySelector('.app__players').textContent = '';
+                    }     
+                    renderPlayersList(data); // вывод списка игроков №4
                };
            },
         });
@@ -59,7 +61,9 @@ function renderPlayersList(data) { // Выводим список игроков
         const li = document.createElement('li');
         li.classList.add('app__player');
         li.textContent = player.login;
-        document.querySelector('.app__players').appendChild(li);
+        if(document.querySelector('.app__players')){
+            document.querySelector('.app__players').appendChild(li);
+        }
     });
 };
 
@@ -76,10 +80,7 @@ function renderPlayBlock(container){ // отрисовка блока кнопк
                     console.log('Ошибка!');
                 }else{
                     window.application.id.game = data['player-status'].game.id;
-                    window.application.timers.forEach(timer => {
-                        clearInterval(timer);
-                    });
-                    window.application.timers = [];
+                    clearTimers();
                     window.application.renderScreen('waiting');
                 };
             },

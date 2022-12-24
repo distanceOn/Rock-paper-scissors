@@ -28,13 +28,24 @@
             }
         },
         id: {},
+        enemies: {},
         timers: [],
         playerTokens: {},
     }
     const blocks = window.application.blocks;
     const players = window.application.playerTokens;
+
+    function clearTimers(){
+        window.application.timers.forEach(timer => {
+            clearInterval(timer);
+        });
+        window.application.timers = [];
+    }
   </script>
   <script src="./js/game.js"></script>
+  <script src="./js/win.js"></script>
+  <script src="./js/lose.js"></script>
+  <script src="./js/move.js"></script>
   <script src="./js/waiting.js"></script>
   <script src="./js/lobby.js"></script>
   <script src="./js/login.js"></script>
