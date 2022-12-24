@@ -33,7 +33,7 @@ function renderMoveBlock(container) { // отрисовка блока хода 
     rock.textContent = 'Камень';
     container.appendChild(rock);
 
-    rock.addEventListener('click', () => {
+    rock.addEventListener('click', () => { // камень
         move('rock', status);
     });
 
@@ -42,7 +42,7 @@ function renderMoveBlock(container) { // отрисовка блока хода 
     scissors.textContent = 'Ножницы';
     container.appendChild(scissors);
 
-    scissors.addEventListener('click', () => {
+    scissors.addEventListener('click', () => { //ножницы
         move('scissors', status);
     });
 
@@ -51,39 +51,39 @@ function renderMoveBlock(container) { // отрисовка блока хода 
     paper.textContent = 'Бумага';
     container.appendChild(paper);
 
-    paper.addEventListener('click', () => {
+    paper.addEventListener('click', () => { // бумага
         move('paper', status);
     });
 };
 
 function move(turn, status){  // результат хода №3
-    if(status === ''){
+    if(status === ''){ // первый запрос, если статуса еще нет
         request({
             path: `play?token=${window.application.playerTokens.player}&id=${window.application.id.game}&move=${turn}`,
             onSuccess: (data) => {
                 console.log(data['game-status'].status);
                 status = data['game-status'].status;
                 if(status === 'waiting-for-enemy-move'){
-                    waitingPrint();
-                    move(turn, status);
+                    waitingPrint(); // рисуем ожидание противника
+                    move(turn, status); // рекурсия, заново проверяем статус
                 }else{
-                    waitingDel();
-                    result(status);
+                    waitingDel(); // удаляем надпись если есть
+                    result(status); // результат боя №4
                 }
             },
         });
-    }else if(status === 'waiting-for-enemy-move'){
+    }else if(status === 'waiting-for-enemy-move'){ // последующие запросы
         request({
             path: `game-status?token=${window.application.playerTokens.player}&id=${window.application.id.game}`,
             onSuccess: (data) => {
                 if(data['game-status'].status === 'waiting-for-enemy-move'){
-                    setTimeout(() => {
-                        move(turn, status);                            
+                    setTimeout(() => { 
+                        move(turn, status); // рекурсия с задержкой 2 секунды, заново проверяем статус                           
                     }, 2000);
                 }else{
-                    waitingDel();
+                    waitingDel(); // удаляем надпись если есть
                     status = data['game-status'].status;
-                    result(status);
+                    result(status); // результат боя №4
                 }
             }
         });
@@ -91,34 +91,34 @@ function move(turn, status){  // результат хода №3
 
 };
 
-function result(status) {
+function result(status) { // результат боя №4
     switch (status) {
         case 'waiting-for-your-move':
             console.log('Ничья');
-            window.application.renderScreen('move');            
+            window.application.renderScreen('move'); // отрисовка экрана хода №1            
             break;
         case 'lose':
             console.log('Поражение');
-            window.application.renderScreen('lose');
+            window.application.renderScreen('lose'); // отрисовка экрана поражения
             break;
         case 'win':
             console.log('Победа');
-            window.application.renderScreen('win');
+            window.application.renderScreen('win'); // отрисовка экрана победы
             break;
         default:
             break;
     };
 }
 
-function waitingPrint() {
+function waitingPrint() { // рисуем надпись ожидания хода противника
     waitingDel();
     const waiting = document.createElement('h3');
     waiting.classList.add('app__waiting-enemy');
-    waiting.textContent = 'Ожидание хода соперника...'
+    waiting.textContent = 'Ожидание хода соперника...';
     document.querySelector('.app').appendChild(waiting);    
 }
 
-function waitingDel() {
+function waitingDel() { // удаляем надпись ожидания хода противника, если есть
     if(document.querySelector('.app__waiting-enemy')){
         document.querySelector('.app').lastChild.remove();
     }    
