@@ -96,6 +96,9 @@ function result(status) { // результат боя №4
         case 'waiting-for-your-move':
             console.log('Ничья');
             window.application.renderScreen('move'); // отрисовка экрана хода №1            
+            setTimeout(() => {
+                tiePrint();
+            }, 300);
             break;
         case 'lose':
             console.log('Поражение');
@@ -111,6 +114,7 @@ function result(status) { // результат боя №4
 }
 
 function waitingPrint() { // рисуем надпись ожидания хода противника
+    tieDel();
     waitingDel();
     const waiting = document.createElement('h3');
     waiting.classList.add('app__waiting-enemy');
@@ -123,4 +127,15 @@ function waitingDel() { // удаляем надпись ожидания ход
         document.querySelector('.app').lastChild.remove();
     }    
 }
-                
+function tiePrint() {
+    const tie = document.createElement('h3');
+    tie.classList.add('app__tie');
+    tie.textContent = 'Ничья. Еще раз!'
+    document.querySelector('.app').appendChild(tie);
+}
+
+function tieDel() {
+    if(document.querySelector('.app__tie')){
+        document.querySelector('.app').lastChild.remove();
+    }
+}   

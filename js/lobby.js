@@ -1,5 +1,4 @@
 window.application.blocks['lobby-block'] = renderLobbyBlock;
-window.application.blocks['play-block'] = renderPlayBlock;
 
 window.application.screens['lobby'] = renderLobbyScreen;
 
@@ -67,25 +66,3 @@ function renderPlayersList(data) { // Выводим список игроков
     });
 };
 
-function renderPlayBlock(container){ // отрисовка блока кнопки играть №5
-    const play = document.createElement('button');
-    play.classList.add('app__play-button');
-    play.textContent = 'Играть';
-
-    play.addEventListener('click', () => {
-        request({
-            path: `start?token=${window.application.playerTokens.player}`,
-            onSuccess: (data) => {
-                if(data.status === 'error'){
-                    console.log('Ошибка!');
-                }else{
-                    window.application.id.game = data['player-status'].game.id;
-                    clearTimers();
-                    window.application.renderScreen('waiting');
-                };
-            },
-        });
-    });
-
-    container.appendChild(play);
-};
