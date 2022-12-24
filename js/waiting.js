@@ -8,6 +8,7 @@ function renderWaitingScreen() { //   Отрисовка экрана ожида
 
 
     const title = document.createElement('h1');
+    title.classList.add('app__h1');
     title.textContent = 'Игра';
 
     const content = document.createElement('div');

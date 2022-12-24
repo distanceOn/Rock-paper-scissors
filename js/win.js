@@ -8,13 +8,13 @@ function renderWinScreen() { //   Отрисовка экрана победы �
 
 
     const title = document.createElement('h1');
+    title.classList.add('app__h1');
     title.textContent = 'Игра';
 
     const content = document.createElement('div');
+    content.classList.add('app__content-move');
 	
     window.application.renderBlock('win-block', content); // блок победы
-    window.application.renderBlock('to_lobby-block', content); // переход в лобби
-    window.application.renderBlock('play-block', content); // кнопка играть
 
     app.appendChild(title);
     app.appendChild(content);
@@ -32,4 +32,11 @@ function renderWinBlock(container) { // отрисовка блока побед
     winner.classList.add('app__winner');
     winner.textContent = 'Вы выиграли!';
     container.appendChild(winner);
+
+    const div = document.createElement('div');
+    div.classList.add('app__end-buttons');
+    container.appendChild(div);
+
+    window.application.renderBlock('to_lobby-block', div); // переход в лобби
+    window.application.renderBlock('play-block', div); // кнопка играть
 };

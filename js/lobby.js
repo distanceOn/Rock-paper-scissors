@@ -10,13 +10,14 @@ function renderLobbyScreen() { //   Отрисовка экрана лобби �
 
 
     const title = document.createElement('h1');
+    title.classList.add('app__h1');
     title.textContent = 'Лобби';
 
     const content = document.createElement('div');
-	
+    content.classList.add('app__content-lobby');
+
     window.application.renderBlock('lobby-block', content); // отрисовка блока лобби №2
     window.application.renderBlock('play-block', content); // отрисовка блока кнопки играть №5
-
 
 	app.appendChild(title);
     app.appendChild(content);
@@ -24,9 +25,17 @@ function renderLobbyScreen() { //   Отрисовка экрана лобби �
 
 function renderLobbyBlock(container) { // отрисовка блока лобби №2
     console.log(window.application.playerTokens);
+
+    const olName = document.createElement('h2');
+    olName.classList.add('app__ol-name');
+    olName.textContent = 'Список игроков онлайн';
+    container.appendChild(olName);
+
     const ol = document.createElement('ol');
     ol.classList.add('app__players');
     container.appendChild(ol);
+
+
 
     window.application.timers.push(setInterval(() => { // добавляем интервал и начинаем
         requestPlayers(); // запрос списка игроков №3
@@ -56,6 +65,7 @@ function requestPlayers() { // запрос списка игроков №3 и 
 function renderPlayersList(data) { // Выводим список игроков №4
     
     console.log(data);
+
     data.list.forEach(player => { 
         const li = document.createElement('li');
         li.classList.add('app__player');

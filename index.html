@@ -4,9 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Камень, ножницы, бумага</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">        
+  <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
-  <div class="app"></div>
+    <div class="container">
+          <div class="container__border-inside">
+              <div class="app"></div>
+          </div>
+    </div>
 
   <script src="./js/request.js"></script>
   <script>
@@ -32,8 +40,7 @@
         timers: [],
         playerTokens: {},
     }
-    const blocks = window.application.blocks;
-    const players = window.application.playerTokens;
+
 
     function clearTimers(){
         window.application.timers.forEach(timer => {

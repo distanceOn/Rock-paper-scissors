@@ -9,10 +9,12 @@ function renderMoveScreen() { //   Отрисовка экрана хода №1
 
 
     const title = document.createElement('h1');
+    title.classList.add('app__h1');
     title.textContent = 'Игра';
 
     const content = document.createElement('div');
-	
+	content.classList.add('app__content-move');
+
     window.application.renderBlock('move-block', content);
 
 
@@ -28,28 +30,32 @@ function renderMoveBlock(container) { // отрисовка блока хода 
     enemy.textContent = `Ваш противник ${window.application.enemies.enemy}`;
     container.appendChild(enemy);
 
+    const div = document.createElement('div');
+    div.classList.add('app__move-buttons');
+    container.appendChild(div);
+
     const rock = document.createElement('button');
-    rock.classList.add('app__rock');
+    rock.classList.add('app__rock', 'app__move-button');
     rock.textContent = 'Камень';
-    container.appendChild(rock);
+    div.appendChild(rock);
 
     rock.addEventListener('click', () => { // камень
         move('rock', status);
     });
 
     const scissors = document.createElement('button');
-    scissors.classList.add('app__scissors');
+    scissors.classList.add('app__scissors', 'app__move-button');
     scissors.textContent = 'Ножницы';
-    container.appendChild(scissors);
+    div.appendChild(scissors);
 
     scissors.addEventListener('click', () => { //ножницы
         move('scissors', status);
     });
 
     const paper = document.createElement('button');
-    paper.classList.add('app__paper');
+    paper.classList.add('app__paper', 'app__move-button');
     paper.textContent = 'Бумага';
-    container.appendChild(paper);
+    div.appendChild(paper);
 
     paper.addEventListener('click', () => { // бумага
         move('paper', status);
@@ -119,23 +125,23 @@ function waitingPrint() { // рисуем надпись ожидания ход
     const waiting = document.createElement('h3');
     waiting.classList.add('app__waiting-enemy');
     waiting.textContent = 'Ожидание хода соперника...';
-    document.querySelector('.app').appendChild(waiting);    
+    document.querySelector('.app__content-move').appendChild(waiting);    
 }
 
 function waitingDel() { // удаляем надпись ожидания хода противника, если есть
     if(document.querySelector('.app__waiting-enemy')){
-        document.querySelector('.app').lastChild.remove();
+        document.querySelector('.app__content-move').lastChild.remove();
     }    
 }
 function tiePrint() {
     const tie = document.createElement('h3');
     tie.classList.add('app__tie');
     tie.textContent = 'Ничья. Еще раз!'
-    document.querySelector('.app').appendChild(tie);
+    document.querySelector('.app__content-move').appendChild(tie);
 }
 
 function tieDel() {
     if(document.querySelector('.app__tie')){
-        document.querySelector('.app').lastChild.remove();
+        document.querySelector('.app__content-move').lastChild.remove();
     }
 }   
